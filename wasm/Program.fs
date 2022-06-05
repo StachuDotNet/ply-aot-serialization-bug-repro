@@ -2,34 +2,30 @@
 
 module ClientInterop =
   type expr =
-    | ENull
-    | ELet of expr * expr
+    | ELet of expr
     | EPipe of expr list
-    | EPipeTarget 
 
   type Fn = { expr : expr }
   type Handler = { fn : Fn  }
   type Payload = | Handler of Handler
 
 module Serialization =
+  open System.Text.Json
+  open System.Text.Json.Serialization
 
-  module Vanilla =
-    open System.Text.Json
-    open System.Text.Json.Serialization
+  let options () = 
+    let fsharpConverter =
+      JsonFSharpConverter(
+        unionEncoding =
+          (JsonUnionEncoding.InternalTag ||| JsonUnionEncoding.UnwrapOption)
+      )
+    let options = JsonSerializerOptions()
+    options.MaxDepth <- 1024
+    options.Converters.Add(fsharpConverter)
+    options
 
-    let options () = 
-      let fsharpConverter =
-        JsonFSharpConverter(
-          unionEncoding =
-            (JsonUnionEncoding.InternalTag ||| JsonUnionEncoding.UnwrapOption)
-        )
-      let options = JsonSerializerOptions()
-      options.MaxDepth <- 1024
-      options.Converters.Add(fsharpConverter)
-      options
-
-    let deserialize<'a> (json : string) : 'a =
-      JsonSerializer.Deserialize<'a>(json, options())
+  let deserialize<'a> (json : string) : 'a =
+    JsonSerializer.Deserialize<'a>(json, options())
 
 
 type EvalWorker =
@@ -37,7 +33,7 @@ type EvalWorker =
     printfn "Hello from F#, compiled to WASM"
     
     try
-      Serialization.Vanilla.deserialize<ClientInterop.Payload> message |> ignore
+      Serialization.deserialize<ClientInterop.Payload> message |> ignore
       printfn "Deserialized"
     with
     | e -> printfn "failed to deserialize %A" e.Message
