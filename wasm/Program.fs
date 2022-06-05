@@ -4,7 +4,6 @@ module ClientInterop =
   type expr =
     | ENull
     | ELet of expr * expr
-    | EIf of expr * expr * expr
     | EPipe of expr list
     | EPipeTarget 
 
