@@ -13,61 +13,58 @@
     console.log('mode', mode);
 
     const brokenInAot = [
-      "AnalyzeHandler",
+      "Handler",
       {
-        "user_fns": [
-          {
-            "metadata": {
-              "name": [ "Filled", "0", "x" ],
-              "parameters": [],
-              "description": "",
-              "return_type": ["Filled", "0", ["TAny"]],
-              "infix": false
-            },
-            "ast": [
-              "ELet", "0", "x", [ "ENull", "0" ],
-              [ "ELet", "0", "x", [ "ENull", "0" ],
-                [ "ELet", "0", "x", [ "ENull", "0" ],
-                  [ "ELet", "0", "x", [ "ENull", "0" ],
-                    [ "ELet", "0", "x", [ "ENull", "0" ],
-                      [ "ELet", "0", "x", [ "ENull", "0" ],
-                        [ "ELet", "0", "x", [ "ENull", "0" ],
-                          [ "ELet", "0", "x", [ "ENull", "0" ],
-                            [ "EIf", "0",
-                              [ "ENull", "0" ],
-                              [ "ELet", "0", "x", [ "ENull", "0" ],
-                                [ "ELet", "0", "x", [ "ENull", "0" ],
-                                  [ "ELet", "0", "x", [ "ENull", "0" ],
-                                    [ "ELet", "0", "x", [ "ENull", "0" ],
-                                      [ "ELet", "0", "x", [ "ENull", "0" ],
-                                        [ "ELet", "0", "x",
-                                          [ "EPipe", "0", [
-                                              [ "EPipe", "0", [
-                                                  [ "EPipe", "0", [
-                                                      [ "EPipe", "0", [
-                                                          [ "ENull", "0" ],
-                                                          [ "ENull", "0" ],
-                                                          [ "ENull", "0" ]
+        "fn": {
+          "expr": [
+            "ELet", "x", [ "ENull" ],
+            [ "ELet", "x", [ "ENull" ],
+              [ "ELet", "x", [ "ENull" ],
+                [ "ELet", "x", [ "ENull" ],
+                  [ "ELet", "x", [ "ENull" ],
+                    [ "ELet", "x", [ "ENull" ],
+                      [ "ELet", "x", [ "ENull" ],
+                        [ "ELet", "x", [ "ENull" ],
+                          [ "ELet", "x", [ "ENull" ],
+                            [ "ELet", "x", [ "ENull" ],
+                              [ "ELet", "x", [ "ENull" ],
+                                [ "EIf",
+                                  [ "ENull" ],
+                                  [ "ELet", "x", [ "ENull" ],
+                                    [ "ELet", "x", [ "ENull" ],
+                                      [ "ELet", "x", [ "ENull" ],
+                                        [ "ELet", "x", [ "ENull" ],
+                                          [ "ELet", "x", [ "ENull" ],
+                                            [ "ELet", "x",
+                                              [ "EPipe", [
+                                                  [ "EPipe", [
+                                                      [ "EPipe", [
+                                                          [ "EPipe", [
+                                                              [ "ENull" ],
+                                                              [ "ENull" ],
+                                                              [ "ENull" ]
+                                                            ]
+                                                          ],
+                                                          [ "ENull" ],
+                                                          [ "ENull" ]
                                                         ]
                                                       ],
-                                                      [ "ENull", "0" ],
-                                                      [ "ENull", "0" ]
+                                                      [ "ENull" ]
                                                     ]
                                                   ],
-                                                  [ "ENull", "0" ]
+                                                  [ "ENull" ]
                                                 ]
                                               ],
-                                              [ "ENull", "0" ]
+                                              [ "ENull" ]
                                             ]
-                                          ],
-                                          [ "ENull", "0" ]
+                                          ]
                                         ]
                                       ]
                                     ]
-                                  ]
+                                  ],
+                                  [ "ENull" ]
                                 ]
-                              ],
-                              [ "ENull", "0" ]
+                              ]
                             ]
                           ]
                         ]
@@ -77,8 +74,8 @@
                 ]
               ]
             ]
-          }
-        ]
+          ]
+        }
       }
     ];
 
@@ -87,7 +84,7 @@
         console.log(`Loading: '${type}', '${name}', '${defaultUri}', '${integrity}'`);
         return `blazor/${mode}/${name}`;
       }
-    }).then(function () {
+    }).then(() => {
       const messageHandler = Module.mono_bind_static_method(
         "[Wasm]Wasm.EvalWorker:OnMessage",
       );

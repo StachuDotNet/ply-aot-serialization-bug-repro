@@ -1,6 +1,6 @@
 # clear things
-rm -rf **/bin
-rm -rf **/obj
+# rm -rf **/bin
+# rm -rf **/obj
 rm -rf webhost/wwwroot/blazor/
 mkdir webhost/wwwroot/blazor
 
