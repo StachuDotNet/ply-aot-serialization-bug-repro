@@ -1,0 +1,103 @@
+<html>
+
+<body>
+  <p>Bug demo!</p>
+  <a href="http://127.0.0.1:5000/?mode=nonpublish">Non-published</a>
+  |
+  <a href="http://127.0.0.1:5000/?mode=publish">Published (broken)</a>
+
+  <script type="text/javascript" src="blazor/nonpublish/blazor.webassembly.js" autostart="false"></script>
+  <script>
+    // what mode are we in - publish or nonpublish?
+    const mode = (new URLSearchParams(window.location.search)).get("mode") || "nonpublish";
+    console.log('mode', mode);
+
+    const brokenInAot = [
+      "AnalyzeHandler",
+      {
+        "user_fns": [
+          {
+            "metadata": {
+              "name": [ "Filled", "0", "x" ],
+              "parameters": [],
+              "description": "",
+              "return_type": ["Filled", "0", ["TAny"]],
+              "infix": false
+            },
+            "ast": [
+              "ELet", "0", "x", [ "ENull", "0" ],
+              [ "ELet", "0", "x", [ "ENull", "0" ],
+                [ "ELet", "0", "x", [ "ENull", "0" ],
+                  [ "ELet", "0", "x", [ "ENull", "0" ],
+                    [ "ELet", "0", "x", [ "ENull", "0" ],
+                      [ "ELet", "0", "x", [ "ENull", "0" ],
+                        [ "ELet", "0", "x", [ "ENull", "0" ],
+                          [ "ELet", "0", "x", [ "ENull", "0" ],
+                            [ "EIf", "0",
+                              [ "ENull", "0" ],
+                              [ "ELet", "0", "x", [ "ENull", "0" ],
+                                [ "ELet", "0", "x", [ "ENull", "0" ],
+                                  [ "ELet", "0", "x", [ "ENull", "0" ],
+                                    [ "ELet", "0", "x", [ "ENull", "0" ],
+                                      [ "ELet", "0", "x", [ "ENull", "0" ],
+                                        [ "ELet", "0", "x",
+                                          [ "EPipe", "0", [
+                                              [ "EPipe", "0", [
+                                                  [ "EPipe", "0", [
+                                                      [ "EPipe", "0", [
+                                                          [ "ENull", "0" ],
+                                                          [ "ENull", "0" ],
+                                                          [ "ENull", "0" ]
+                                                        ]
+                                                      ],
+                                                      [ "ENull", "0" ],
+                                                      [ "ENull", "0" ]
+                                                    ]
+                                                  ],
+                                                  [ "ENull", "0" ]
+                                                ]
+                                              ],
+                                              [ "ENull", "0" ]
+                                            ]
+                                          ],
+                                          [ "ENull", "0" ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ],
+                              [ "ENull", "0" ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ];
+
+    Blazor.start({
+      loadBootResource: function (type, name, defaultUri, integrity) {
+        console.log(`Loading: '${type}', '${name}', '${defaultUri}', '${integrity}'`);
+        return `blazor/${mode}/${name}`;
+      }
+    }).then(function () {
+      const messageHandler = Module.mono_bind_static_method(
+        "[Wasm]Wasm.EvalWorker:OnMessage",
+      );
+
+      // this fails (only) with AOT+published builds
+      const serialized = JSON.stringify(brokenInAot);
+      console.log(serialized.length);
+      messageHandler(serialized);
+    });
+  </script>
+</body>
+
+</html>
