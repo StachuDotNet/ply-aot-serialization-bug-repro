@@ -3,7 +3,7 @@
 module ClientInterop =
   type expr =
     | ENull
-    | ELet of string * expr * expr
+    | ELet of expr * expr
     | EIf of expr * expr * expr
     | EPipe of expr list
     | EPipeTarget 
